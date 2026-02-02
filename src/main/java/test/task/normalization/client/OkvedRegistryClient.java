@@ -27,7 +27,7 @@ public class OkvedRegistryClient {
 
     private final RestTemplate restTemplate;
 
-    @Value("okved.file.url")
+    @Value("${okved.file.url}")
     private String fileUrl;
 
 
