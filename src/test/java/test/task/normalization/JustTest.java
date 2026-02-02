@@ -6,6 +6,8 @@ public class JustTest {
 
     @Test
     public void testSomething() {
-        String myNumber = "+79529391429";
+        String withDots = "11.22.33";
+
+        System.out.println(withDots.replace(".", ""));
     }
 }
