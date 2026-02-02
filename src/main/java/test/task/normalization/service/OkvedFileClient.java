@@ -61,7 +61,7 @@ public class OkvedFileClient {
         storage.add(reducedOkvedDto);
 
         if (dto.getItems() != null && !dto.getItems().isEmpty()) {
-            dto.getItems().forEach(item -> addReducedOkved(dto, storage));
+            dto.getItems().forEach(item -> addReducedOkved(item, storage));
         }
     }
 }
