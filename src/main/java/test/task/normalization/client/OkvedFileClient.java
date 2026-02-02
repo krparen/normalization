@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,10 @@ import java.util.List;
 @Slf4j
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class OkvedFileClient {
+
+    private final RestTemplate restTemplate;
 
     @Value("okved.file.url")
     private String fileUrl;
@@ -33,26 +37,20 @@ public class OkvedFileClient {
 
     @SneakyThrows
     void downloadFile() {
-        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> fileAsResponse = restTemplate.getForEntity(fileUrl, String.class);
 
         String fileAsString = fileAsResponse.getBody();
-        System.out.println("file: \n");
-        System.out.println(fileAsString);
 
         CollectionType typeReference =
                 TypeFactory.defaultInstance().constructCollectionType(List.class, OkvedDto.class);
         List<OkvedDto> okvedsFromFile = objectMapper.readValue(fileAsString, typeReference);
-        System.out.println("dto: \n");
-        System.out.println(okvedsFromFile);
+        log.debug("parsed okveds from file: {}", okvedsFromFile);
 
-        okvedsFromFile.forEach(okved -> addReducedOkved(okved, okvedStorage));
-
-        System.out.println("storage: \n");
-        System.out.println(okvedStorage);
+        okvedsFromFile.forEach(okved -> addFlatOkveds(okved, okvedStorage));
+        log.debug("okved storage: {}", okvedStorage);
     }
 
-    private void addReducedOkved(OkvedDto dto, List<FlatOkvedDto> storage) {
+    private void addFlatOkveds(OkvedDto dto, List<FlatOkvedDto> storage) {
         if (dto == null) {
             return;
         }
@@ -68,7 +66,7 @@ public class OkvedFileClient {
         storage.add(flatOkvedDto);
 
         if (dto.getItems() != null && !dto.getItems().isEmpty()) {
-            dto.getItems().forEach(item -> addReducedOkved(item, storage));
+            dto.getItems().forEach(item -> addFlatOkveds(item, storage));
         }
     }
 }
