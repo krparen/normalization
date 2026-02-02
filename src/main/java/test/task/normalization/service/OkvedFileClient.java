@@ -6,13 +6,14 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import test.task.normalization.dto.OkvedDto;
+import test.task.normalization.dto.ReducedOkvedDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -25,6 +26,8 @@ public class OkvedFileClient {
 
 
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    private List<ReducedOkvedDto> okvedStorage = new ArrayList<>();
 
     @SneakyThrows
     void downloadFile() {
@@ -40,5 +43,25 @@ public class OkvedFileClient {
         List<OkvedDto> okvedsFromFile = objectMapper.readValue(fileAsString, typeReference);
         System.out.println("dto: \n");
         System.out.println(okvedsFromFile);
+
+        okvedsFromFile.forEach(okved -> addReducedOkved(okved, okvedStorage));
+
+        System.out.println("storage: \n");
+        System.out.println(okvedStorage);
+    }
+
+    private void addReducedOkved(OkvedDto dto, List<ReducedOkvedDto> storage) {
+        if (dto == null) {
+            return;
+        }
+
+        ReducedOkvedDto reducedOkvedDto = new ReducedOkvedDto();
+        reducedOkvedDto.setName(dto.getName());
+        reducedOkvedDto.setCode(dto.getCode());
+        storage.add(reducedOkvedDto);
+
+        if (dto.getItems() != null && !dto.getItems().isEmpty()) {
+            dto.getItems().forEach(item -> addReducedOkved(dto, storage));
+        }
     }
 }
