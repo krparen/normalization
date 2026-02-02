@@ -33,10 +33,8 @@ public class OkvedFileClient {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    private List<FlatOkvedDto> okvedStorage = new ArrayList<>();
-
     @SneakyThrows
-    void downloadFile() {
+    public List<FlatOkvedDto> getOkvedsFromGithub() {
         ResponseEntity<String> fileAsResponse = restTemplate.getForEntity(fileUrl, String.class);
 
         String fileAsString = fileAsResponse.getBody();
@@ -46,8 +44,11 @@ public class OkvedFileClient {
         List<OkvedDto> okvedsFromFile = objectMapper.readValue(fileAsString, typeReference);
         log.debug("parsed okveds from file: {}", okvedsFromFile);
 
-        okvedsFromFile.forEach(okved -> addFlatOkveds(okved, okvedStorage));
-        log.debug("okved storage: {}", okvedStorage);
+        List<FlatOkvedDto> result = new ArrayList<>();
+        okvedsFromFile.forEach(okved -> addFlatOkveds(okved, result));
+        log.debug("okved storage: {}", result);
+
+        return result;
     }
 
     private void addFlatOkveds(OkvedDto dto, List<FlatOkvedDto> storage) {

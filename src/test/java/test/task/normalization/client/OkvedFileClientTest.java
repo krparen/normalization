@@ -11,6 +11,6 @@ class OkvedFileClientTest {
         var client = new OkvedFileClient(new RestTemplate());
         client.setFileUrl("https://raw.githubusercontent.com/bergstar/testcase/master/okved.json");
         client.setObjectMapper(new ObjectMapper());
-        client.downloadFile();
+        client.getOkvedsFromGithub();
     }
 }
