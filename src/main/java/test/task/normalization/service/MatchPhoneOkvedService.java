@@ -26,19 +26,7 @@ public class MatchPhoneOkvedService {
         okveds.forEach(item -> {
             String commonPrefix = StringUtils.getCommonPrefix(phoneInReverse, item.getCodeNoDots());
             if (StringUtils.isNotEmpty(commonPrefix)) {
-                if (
-                        commonPrefix.length() == matchingInfo.getMatchLength()
-                                && !matchingInfo.isFullMatch()
-                                && commonPrefix.length() == item.getCodeNoDots().length()
-                ) {
-                    matchingInfo.setOkved(item);
-                    matchingInfo.setBestMatch(commonPrefix);
-                    matchingInfo.setFullMatch(true);
-                } else if (commonPrefix.length() > matchingInfo.getMatchLength()) {
-                    matchingInfo.setOkved(item);
-                    matchingInfo.setBestMatch(commonPrefix);
-                    matchingInfo.setFullMatch(commonPrefix.length() == item.getCodeNoDots().length());
-                }
+                updateBestMatchIfNeeded(item, commonPrefix, matchingInfo);
             }
         });
 
@@ -48,5 +36,24 @@ public class MatchPhoneOkvedService {
         result.setShortOkvedDto(matchingInfo.getOkved().toShort());
 
         return result;
+    }
+
+    private static void updateBestMatchIfNeeded(FlatOkvedDto item, String commonPrefix, MatchPhoneOkvedInfo matchingInfo) {
+        // Если случился "полный" мэтч - ОКВЭД совпал полностью с началом перевёрнутого номера,
+        // и при этом на данный момент самый лучший мэтч - той же длины, но не "полный".
+        // Тогда запоминаем "полный" мэтч - он более приоритетный.
+        if (commonPrefix.length() == matchingInfo.getMatchLength()
+                && !matchingInfo.isFullMatch()
+                && commonPrefix.length() == item.getCodeNoDots().length()
+        ) {
+            matchingInfo.setOkved(item);
+            matchingInfo.setBestMatch(commonPrefix);
+            matchingInfo.setFullMatch(true);
+        // Обычный кейс - встретили более длинный мэтч.
+        } else if (commonPrefix.length() > matchingInfo.getMatchLength()) {
+            matchingInfo.setOkved(item);
+            matchingInfo.setBestMatch(commonPrefix);
+            matchingInfo.setFullMatch(commonPrefix.length() == item.getCodeNoDots().length());
+        }
     }
 }
