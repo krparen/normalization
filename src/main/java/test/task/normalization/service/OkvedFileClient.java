@@ -37,8 +37,8 @@ public class OkvedFileClient {
 
         CollectionType typeReference =
                 TypeFactory.defaultInstance().constructCollectionType(List.class, OkvedDto.class);
-        List<OkvedDto> resultDto = objectMapper.readValue(fileAsString, typeReference);
+        List<OkvedDto> okvedsFromFile = objectMapper.readValue(fileAsString, typeReference);
         System.out.println("dto: \n");
-        System.out.println(resultDto);
+        System.out.println(okvedsFromFile);
     }
 }
