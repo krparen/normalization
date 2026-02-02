@@ -33,7 +33,7 @@ public class PhoneNormalizationService {
 
         validatePhone(phoneOnlyDigits);
 
-        return phoneOnlyDigits;
+        return "+" + phoneOnlyDigits;
     }
 
     void validatePhone(String phone) {

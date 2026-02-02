@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 
-class OkvedFileClientTest {
+class OkvedRegistryClientTest {
 
     @Test
     void downloadFile() {
-        var client = new OkvedFileClient(new RestTemplate());
+        var client = new OkvedRegistryClient(new RestTemplate());
         client.setFileUrl("https://raw.githubusercontent.com/bergstar/testcase/master/okved.json");
         client.setObjectMapper(new ObjectMapper());
         client.getOkvedsFromGithub();

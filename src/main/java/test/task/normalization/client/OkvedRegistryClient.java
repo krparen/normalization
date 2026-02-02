@@ -23,7 +23,7 @@ import java.util.List;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class OkvedFileClient {
+public class OkvedRegistryClient {
 
     private final RestTemplate restTemplate;
 
