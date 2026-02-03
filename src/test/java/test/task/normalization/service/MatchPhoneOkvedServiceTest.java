@@ -9,9 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import test.task.normalization.client.OkvedRegistryClient;
 import test.task.normalization.dto.FlatOkvedDto;
 import test.task.normalization.dto.MatchPhoneOkvedResultDto;
-import test.task.normalization.dto.OkvedDto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,8 +53,8 @@ class MatchPhoneOkvedServiceTest {
         MatchPhoneOkvedResultDto result = matchPhoneOkvedService.matchPhoneToOkveds(phone);
 
         assertEquals(3, result.getMatchLength());
-        assertEquals(childOkved.getCode(), result.getShortOkvedDto().getCode());
-        assertEquals(childOkved.getName(), result.getShortOkvedDto().getName());
+        assertEquals(childOkved.getCode(), result.getOkved().getCode());
+        assertEquals(childOkved.getName(), result.getOkved().getName());
         assertEquals(normalizedPhone, result.getNormalizedPhone());
     }
 
@@ -74,8 +72,8 @@ class MatchPhoneOkvedServiceTest {
         MatchPhoneOkvedResultDto result = matchPhoneOkvedService.matchPhoneToOkveds(phone);
 
         assertEquals(2, result.getMatchLength());
-        assertEquals(parentOkved.getCode(), result.getShortOkvedDto().getCode());
-        assertEquals(parentOkved.getName(), result.getShortOkvedDto().getName());
+        assertEquals(parentOkved.getCode(), result.getOkved().getCode());
+        assertEquals(parentOkved.getName(), result.getOkved().getName());
         assertEquals(normalizedPhone, result.getNormalizedPhone());
     }
 
@@ -92,7 +90,7 @@ class MatchPhoneOkvedServiceTest {
         MatchPhoneOkvedResultDto result = matchPhoneOkvedService.matchPhoneToOkveds(phone);
 
         assertNull(result.getMatchLength());
-        assertNull(result.getShortOkvedDto());
+        assertNull(result.getOkved());
         assertEquals(normalizedPhone, result.getNormalizedPhone());
     }
 }

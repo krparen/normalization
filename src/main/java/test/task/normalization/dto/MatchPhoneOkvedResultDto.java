@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MatchPhoneOkvedResultDto {
     private String normalizedPhone;
-    private ShortOkvedDto shortOkvedDto;
+    private ShortOkvedDto okved;
     private Integer matchLength;
 
     public static MatchPhoneOkvedResultDto phoneOnly(String phone) {

@@ -37,7 +37,7 @@ public class MatchPhoneOkvedService {
         MatchPhoneOkvedResultDto result = new MatchPhoneOkvedResultDto();
         result.setMatchLength(matchingInfo.getMatchLength());
         result.setNormalizedPhone(normalizedPhone);
-        result.setShortOkvedDto(matchingInfo.getOkved().toShort());
+        result.setOkved(matchingInfo.getOkved().toShort());
 
         return result;
     }
