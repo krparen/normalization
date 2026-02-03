@@ -1,5 +1,6 @@
 package test.task.normalization.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class PhoneNormalizationService {
 
     private static final int RF_MOBILE_PHONE_LENGTH = 11;
@@ -21,6 +23,8 @@ public class PhoneNormalizationService {
     private static final String PHONE_PREFIX_ERROR_MESSAGE =
             "RF mobile phone should start with '79', but this isn't";
 
+    private static final String EMPTY_PHONE_ERROR_MESSAGE = "Empty or null phone cannot be normalized";
+
     /**
      * В условии написано, что ввод без ограничений - поэтому оставляю из введённого только цифры.
      * @param rawPhone - ещё не нормализованный телефон.
@@ -28,7 +32,8 @@ public class PhoneNormalizationService {
      */
     public String normalize(String rawPhone) {
         if (!StringUtils.hasText(rawPhone)) {
-            throw new ServiceException("Empty or null phone cannot be normalized", HttpStatus.BAD_REQUEST);
+            log.error(EMPTY_PHONE_ERROR_MESSAGE);
+            throw new ServiceException(EMPTY_PHONE_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
         }
 
         String phoneOnlyDigits = replaceFirst8With7IfNeeded(rawPhone.replaceAll("\\D", ""));
@@ -52,6 +57,7 @@ public class PhoneNormalizationService {
 
         if (!errors.isEmpty()) {
             String fullErrorMessage = String.join("; ", errors);
+            log.error(fullErrorMessage);
             throw new ServiceException(fullErrorMessage, HttpStatus.BAD_REQUEST);
         }
     }
