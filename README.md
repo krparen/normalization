@@ -34,10 +34,12 @@ https://mvnrepository.com/artifact/org.assertj/assertj-core
 
 Для запуска приложения в корне репозитория выполнить команду `./mvnw clean spring-boot:run`.
 
-Альтернативы: 
-- можно запустить из Intellij Idea (или её аналог)
+Альтернативы на случай проблем с maven wrapper:
+
+- можно сделать то же самое через установленный maven `mvn clean spring-boot:run`
 - можно собрать jar-файл через `mvn clean package`, и запустить полученный fat jar через
 `java -jar ./target/normalization-0.0.1-SNAPSHOT.jar`
+- можно запустить из Intellij Idea (или её аналог)
 
 ### Получение ОКВЭД-а по номеру телефона
 
