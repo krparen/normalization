@@ -1,4 +1,4 @@
-package test.task.normalization.exception;
+package test.task.normalization.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
