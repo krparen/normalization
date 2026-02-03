@@ -78,4 +78,21 @@ class MatchPhoneOkvedServiceTest {
         assertEquals(parentOkved.getName(), result.getShortOkvedDto().getName());
         assertEquals(normalizedPhone, result.getNormalizedPhone());
     }
+
+    @Test
+    void matchPhoneToOkveds_noMatch() {
+        List<FlatOkvedDto> okveds = List.of(childOkved, parentOkved);
+
+        String phone = "79995551111";
+        String normalizedPhone = "+" + phone;
+
+        when(phoneNormalizationService.normalize(phone)).thenReturn(normalizedPhone);
+        when(okvedRegistryClient.getOkvedsFromGithub()).thenReturn(okveds);
+
+        MatchPhoneOkvedResultDto result = matchPhoneOkvedService.matchPhoneToOkveds(phone);
+
+        assertNull(result.getMatchLength());
+        assertNull(result.getShortOkvedDto());
+        assertEquals(normalizedPhone, result.getNormalizedPhone());
+    }
 }

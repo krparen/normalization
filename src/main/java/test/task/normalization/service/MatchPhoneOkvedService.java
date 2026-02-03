@@ -30,6 +30,10 @@ public class MatchPhoneOkvedService {
             }
         });
 
+        if (matchingInfo.noMatchHappened()) {
+            return MatchPhoneOkvedResultDto.phoneOnly(normalizedPhone);
+        }
+
         MatchPhoneOkvedResultDto result = new MatchPhoneOkvedResultDto();
         result.setMatchLength(matchingInfo.getMatchLength());
         result.setNormalizedPhone(normalizedPhone);
