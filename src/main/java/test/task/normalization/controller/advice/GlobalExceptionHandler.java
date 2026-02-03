@@ -10,7 +10,7 @@ import test.task.normalization.exception.ServiceExceptionResponse;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ServiceException.class)
-    ResponseEntity<ServiceExceptionResponse> handleServiceException(ServiceException ex) {
+    public ResponseEntity<ServiceExceptionResponse> handleServiceException(ServiceException ex) {
         ServiceExceptionResponse responseBody = new ServiceExceptionResponse(ex.getMessage());
         return ResponseEntity.status(ex.getHttpStatus()).body(responseBody);
     }
