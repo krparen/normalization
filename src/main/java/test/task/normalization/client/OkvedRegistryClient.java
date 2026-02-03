@@ -26,12 +26,10 @@ import java.util.List;
 public class OkvedRegistryClient {
 
     private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
 
     @Value("${okved.file.url}")
     private String fileUrl;
-
-
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @SneakyThrows
     public List<FlatOkvedDto> getOkvedsFromGithub() {

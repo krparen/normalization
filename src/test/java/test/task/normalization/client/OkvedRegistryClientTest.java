@@ -30,7 +30,7 @@ class OkvedRegistryClientTest {
 
     @BeforeEach
     public void initEach() {
-        okvedRegistryClient = new OkvedRegistryClient(mockRestTemplate);
+        okvedRegistryClient = new OkvedRegistryClient(mockRestTemplate, new ObjectMapper());
         ReflectionTestUtils.setField(okvedRegistryClient, "fileUrl", MOCK_GITHUB_URL);
     }
 
