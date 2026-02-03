@@ -1,7 +1,9 @@
 package test.task.normalization.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import test.task.normalization.exception.ServiceException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,7 @@ public class PhoneNormalizationService {
      */
     public String normalize(String rawPhone) {
         if (!StringUtils.hasText(rawPhone)) {
-            throw new RuntimeException("Empty or null phone cannot be normalized");
+            throw new ServiceException("Empty or null phone cannot be normalized", HttpStatus.BAD_REQUEST);
         }
 
         String phoneOnlyDigits = replaceFirst8With7IfNeeded(rawPhone.replaceAll("\\D", ""));
@@ -50,7 +52,7 @@ public class PhoneNormalizationService {
 
         if (!errors.isEmpty()) {
             String fullErrorMessage = String.join("; ", errors);
-            throw new RuntimeException(fullErrorMessage);
+            throw new ServiceException(fullErrorMessage, HttpStatus.BAD_REQUEST);
         }
     }
 

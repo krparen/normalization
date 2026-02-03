@@ -1,6 +1,7 @@
 package test.task.normalization.service;
 
 import org.junit.jupiter.api.Test;
+import test.task.normalization.exception.ServiceException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,8 +25,8 @@ class PhoneNormalizationServiceTest {
     @Test
     void validatePhone_badLength() {
         String shortPhone = "7999";
-        RuntimeException thrown = assertThrows(
-                RuntimeException.class,
+        ServiceException thrown = assertThrows(
+                ServiceException.class,
                 () -> phoneNormalizationService.validatePhone(shortPhone)
         );
 
@@ -36,8 +37,8 @@ class PhoneNormalizationServiceTest {
     @Test
     void validatePhone_badPrefix() {
         String shortPhone = "09998886677";
-        RuntimeException thrown = assertThrows(
-                RuntimeException.class,
+        ServiceException thrown = assertThrows(
+                ServiceException.class,
                 () -> phoneNormalizationService.validatePhone(shortPhone)
         );
 
